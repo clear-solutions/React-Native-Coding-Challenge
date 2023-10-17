@@ -22,7 +22,7 @@ Develop a tool to help Maks, our busy manager, manage his daily tasks (Todos).
 
 ## Requirements
 
-Please leek at the example of user interface:
+Please look at the example of user interface:
 
 ![design](2023-10-17%2014.43.50.jpg)
 
