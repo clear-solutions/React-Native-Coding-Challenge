@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {Button, View} from 'react-native';
 import {useToDos} from '../../../context/ToDosContext';
 import ToDoList from '../TodoList';
@@ -8,15 +8,15 @@ const ToDoUncompleted = () => {
   const [newToDo, setNewToDo] = useState<string>('');
   const {uncompletedToDos, completeSelectedTodos, createNewTodo} = useToDos();
 
-  const onTextChange = (text: string) => {
+  const onTextChange = useCallback((text: string) => {
     setNewToDo(text);
-  };
+  }, []);
 
-  const onCreatePress = () => {
+  const onCreatePress = useCallback(() => {
     if (!newToDo) return;
     createNewTodo(newToDo);
     setNewToDo('');
-  };
+  }, [newToDo, createNewTodo]);
 
   return (
     <View className="flex-1 pt-4">

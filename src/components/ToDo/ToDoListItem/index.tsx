@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {ToDo} from '../../../types';
 import {useToDos} from '../../../context/ToDosContext';
@@ -14,13 +14,15 @@ const ToDoListItem: React.FC<Props> = ({todo, listType}) => {
   const [checked, setChecked] = useState<boolean>(false);
   const checkStyle = checked ? 'bg-white' : '';
 
+  const handlePress = useCallback(() => {
+    setChecked(prev => !prev);
+    toggleTodoSelection(id, listType);
+  }, [id, listType, toggleTodoSelection]);
+
   return (
     <View className="flex-row items-center bg-gray-400 p-4 rounded-lg m-2 shadow-2xl">
       <TouchableOpacity
-        onPress={() => {
-          setChecked(prev => !prev);
-          toggleTodoSelection(id, listType);
-        }}
+        onPress={handlePress}
         className="w-6 h-6 border-2 border-gray-300 mr-3 justify-center items-center">
         <View className={`w-4 h-4 ${checkStyle}`} />
       </TouchableOpacity>
@@ -29,4 +31,4 @@ const ToDoListItem: React.FC<Props> = ({todo, listType}) => {
   );
 };
 
-export default ToDoListItem;
+export default React.memo(ToDoListItem);

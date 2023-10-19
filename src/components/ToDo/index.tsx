@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import ToDoUncompleted from './ToDoUncompleted';
 import ToDoCompleted from './ToDoCompleted';
@@ -26,16 +26,21 @@ const Todo = () => {
     uncompleted: ToDoUncompleted,
     completed: ToDoCompleted,
   });
+
+  const handleIndexChange = useCallback((newIndex: number) => {
+    setIndex(newIndex);
+  }, []);
+
   return (
     <View className="flex-1">
       <TabView
         navigationState={{index, routes}}
         renderScene={renderScene}
-        onIndexChange={setIndex}
+        onIndexChange={handleIndexChange}
         renderTabBar={renderTabBar}
       />
     </View>
   );
 };
 
-export default Todo;
+export default React.memo(Todo);

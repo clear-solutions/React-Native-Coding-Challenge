@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Button, View} from 'react-native';
 import ToDoList from '../TodoList';
 import StyledTextInput from '../../unknown/StyledTextInput';
@@ -8,9 +8,12 @@ const ToDoCompleted = () => {
   const {undoSelectedTodos, searchValues, setSearchValues, completedToDos} =
     useToDos();
 
-  const onTextChange = (text: string) => {
-    setSearchValues(text);
-  };
+  const onTextChange = useCallback(
+    (text: string) => {
+      setSearchValues(text);
+    },
+    [setSearchValues],
+  );
 
   return (
     <View className="flex-1">
