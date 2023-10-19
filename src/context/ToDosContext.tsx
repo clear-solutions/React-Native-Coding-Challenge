@@ -21,6 +21,7 @@ const ToDosContext = React.createContext<IToDosContext | undefined>(undefined);
 
 export default function ToDoProvider({children}: any) {
   const [loading, setLoading] = useState(false);
+  const [todos, setTodos] = useState<ToDo[]>([]);
   const [uncompletedToDos, setUncompletedToDos] = useState<ToDo[]>([]);
   const [completedToDos, setCompletedToDos] = useState<ToDo[]>([]);
   const [selectedUncompletedToDos, setSelectedUncompletedToDos] = useState<
@@ -48,7 +49,7 @@ export default function ToDoProvider({children}: any) {
   };
 
   const createNewTodo = (todo: string) => {
-    setUncompletedToDos(prev => {
+    setTodos(prev => {
       return [
         ...prev,
         {completed: false, userId: 1, id: uuidv4(), title: todo},
@@ -57,26 +58,25 @@ export default function ToDoProvider({children}: any) {
   };
 
   const completeSelectedTodos = () => {
-    const updatedUncompletedToDos = uncompletedToDos.filter(
-      todo => !selectedUncompletedToDos.includes(todo.id),
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
+        selectedUncompletedToDos.includes(todo.id)
+          ? {...todo, completed: true}
+          : todo,
+      ),
     );
-    const selectedToDosToComplete = uncompletedToDos.filter(todo =>
-      selectedUncompletedToDos.includes(todo.id),
-    );
-    setUncompletedToDos(updatedUncompletedToDos);
-    setCompletedToDos(prev => [...prev, ...selectedToDosToComplete]);
     setSelectedUncompletedToDos([]);
   };
 
   const undoSelectedTodos = () => {
-    const updatedCompletedToDos = completedToDos.filter(
-      todo => !selectedCompletedToDos.includes(todo.id),
+    setTodos(prevTodos =>
+      prevTodos.map(todo =>
+        selectedCompletedToDos.includes(todo.id)
+          ? {...todo, completed: false}
+          : todo,
+      ),
     );
-    const selectedToDosToUndo = completedToDos.filter(todo =>
-      selectedCompletedToDos.includes(todo.id),
-    );
-    setUncompletedToDos(prev => [...prev, ...selectedToDosToUndo]);
-    setCompletedToDos(updatedCompletedToDos);
+
     setSelectedCompletedToDos([]);
   };
 
@@ -87,12 +87,19 @@ export default function ToDoProvider({children}: any) {
   };
 
   useEffect(() => {
+    const uncompleted = todos.filter(todo => !todo.completed);
+    const completed = todos.filter(todo => todo.completed);
+    setUncompletedToDos(uncompleted);
+    setCompletedToDos(completed);
+  }, [todos]);
+
+  useEffect(() => {
     const extractToDos = async () => {
       setLoading(true);
       try {
         const todos = await getToDos();
         const filteredTodos = todos.filter(todo => todo.userId === 1);
-        setUncompletedToDos(filteredTodos);
+        setTodos(filteredTodos);
         setLoading(false);
       } catch (error) {
         setLoading(false);
