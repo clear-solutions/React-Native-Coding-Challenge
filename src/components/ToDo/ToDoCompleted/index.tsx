@@ -1,14 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Button, View} from 'react-native';
 import ToDoList from '../TodoList';
 import StyledTextInput from '../../unknown/StyledTextInput';
 import {useToDos} from '../../../context/ToDosContext';
 
 const ToDoCompleted = () => {
-  const [searchValues, setSearchValues] = useState<string>('');
-  const {undoSelectedTodos, searchCompletedTodos} = useToDos();
-
-  const filteredToDos = searchCompletedTodos(searchValues);
+  const {undoSelectedTodos, searchValues, setSearchValues, completedToDos} =
+    useToDos();
 
   const onTextChange = (text: string) => {
     setSearchValues(text);
@@ -22,7 +20,7 @@ const ToDoCompleted = () => {
         value={searchValues}
       />
       <Button onPress={undoSelectedTodos} title="Undo" />
-      <ToDoList listType="completed" todos={filteredToDos} />
+      <ToDoList listType="completed" todos={completedToDos} />
     </View>
   );
 };

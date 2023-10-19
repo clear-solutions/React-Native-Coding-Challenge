@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, Dispatch, SetStateAction} from 'react';
 import {v4 as uuidv4} from 'uuid';
 import {ToDo} from '../types';
 import {getToDos} from '../services/api';
@@ -15,6 +15,8 @@ interface IToDosContext {
     todoId: string | number,
     listType: 'uncompleted' | 'completed',
   ) => void;
+  searchValues: string;
+  setSearchValues: Dispatch<SetStateAction<string>>;
 }
 
 const ToDosContext = React.createContext<IToDosContext | undefined>(undefined);
@@ -24,12 +26,14 @@ export default function ToDoProvider({children}: any) {
   const [todos, setTodos] = useState<ToDo[]>([]);
   const [uncompletedToDos, setUncompletedToDos] = useState<ToDo[]>([]);
   const [completedToDos, setCompletedToDos] = useState<ToDo[]>([]);
+  const [searchedToDos, setSearchedToDos] = useState<ToDo[]>([]);
   const [selectedUncompletedToDos, setSelectedUncompletedToDos] = useState<
     (string | number)[]
   >([]);
   const [selectedCompletedToDos, setSelectedCompletedToDos] = useState<
     (string | number)[]
   >([]);
+  const [searchValues, setSearchValues] = useState<string>('');
 
   const toggleTodoSelection = (
     todoId: string | number,
@@ -87,13 +91,6 @@ export default function ToDoProvider({children}: any) {
   };
 
   useEffect(() => {
-    const uncompleted = todos.filter(todo => !todo.completed);
-    const completed = todos.filter(todo => todo.completed);
-    setUncompletedToDos(uncompleted);
-    setCompletedToDos(completed);
-  }, [todos]);
-
-  useEffect(() => {
     const extractToDos = async () => {
       setLoading(true);
       try {
@@ -111,6 +108,24 @@ export default function ToDoProvider({children}: any) {
     extractToDos();
   }, []);
 
+  useEffect(() => {
+    if (searchValues.length === 0) {
+      return setSearchedToDos(todos);
+    }
+    if (searchValues.length < 3) return;
+    const filteredTodos = todos.filter(todo =>
+      todo.title.toLowerCase().includes(searchValues.toLowerCase()),
+    );
+    setSearchedToDos(filteredTodos);
+  }, [searchValues, todos]);
+
+  useEffect(() => {
+    const uncompleted = searchedToDos.filter(todo => !todo.completed);
+    const completed = searchedToDos.filter(todo => todo.completed);
+    setUncompletedToDos(uncompleted);
+    setCompletedToDos(completed);
+  }, [searchedToDos]);
+
   return (
     <ToDosContext.Provider
       value={{
@@ -122,6 +137,8 @@ export default function ToDoProvider({children}: any) {
         undoSelectedTodos,
         searchCompletedTodos,
         toggleTodoSelection,
+        searchValues,
+        setSearchValues,
       }}>
       {children}
     </ToDosContext.Provider>
