@@ -1,0 +1,25 @@
+.input {
+  width: 100%;
+  background: #fff;
+  padding: 10px;
+  outline: none;
+  border-radius: 2px;
+  border: 1px solid #ccc;
+}
+
+.input::placeholder {
+  color: #bebebe;
+}
+
+.button {
+  background: #a1adb7;
+  padding: 10px 35px;
+  border: none;
+  cursor: pointer;
+  margin-left: 20px;
+  color: #fff;
+}
+
+.container {
+  display: flex;
+}
