@@ -1,0 +1,27 @@
+.box {
+  min-height: 500px;
+  min-width: 500px;
+  margin-top: 30px;
+  background: #fff;
+  padding: 10px;
+  outline: none;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+
+.todoTitle {
+  margin-left: 10px;
+}
+
+.todoContainer {
+  margin-top: 5px;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.list {
+  padding: 10px;
+}

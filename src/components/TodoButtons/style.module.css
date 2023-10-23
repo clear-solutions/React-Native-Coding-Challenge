@@ -1,0 +1,17 @@
+.button {
+  background: #a1adb7;
+  padding: 15px 10px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  margin: 0 15px;
+  text-transform: uppercase;
+}
+.button:last-child {
+  margin-top: 3rem;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10rem;
+}
