@@ -6,10 +6,6 @@ import './normalize.css';
 const App: FC = () => {
   return (
     <div className={styles.container}>
-      <div className={styles.flex}>
-        {/* <AddTodoField /> */}
-        {/* <SearchField /> */}
-      </div>
       <div className={styles.center}>
         <CompletedTodo />
       </div>
