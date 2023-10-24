@@ -3,13 +3,17 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import React from "react";
 import Shadow from "../../styles/Shadow";
 import COLORS from "../../constants/Colors";
+import { useAppDispatch, useCustomNavigation } from "../../services/hooks";
+import { openOrCloseModal } from "../../store/layoutSlice";
 
-const AddTodoButton = () => {
+const AddTodoButton = ({styles}: {styles?:string}) => {  const navigation = useCustomNavigation();
+  const dispatch = useAppDispatch();
+
   return (
     <TouchableOpacity
-      onPress={() => {}}
+      className={styles}
+      onPress={() => {dispatch(openOrCloseModal("open"))}}
       style={Shadow.box}
-      //className="rounded-full h-16 w-16 p-0 items-center self-center text-center content-center justify-center bg-white"
     >
       <AntDesign name="pluscircle" size={64} color={COLORS.white} />
     </TouchableOpacity>

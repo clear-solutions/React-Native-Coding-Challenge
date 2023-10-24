@@ -10,6 +10,11 @@ const Shadow = StyleSheet.create({
     shadowColor: "black",
     shadowOffset: { width: 5, height: -4 },
     shadowOpacity: 0.1,
+  },
+  highOpacity: {
+      shadowColor: "black",
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.8,
   }
 });
 

@@ -1,8 +1,8 @@
 import React from "react";
-import { Text, ViewStyle, TextStyle } from "react-native";
+import { Text, ViewStyle, TextStyle, TextProps } from "react-native";
 
-interface ICustomText {
-  children: string | JSX.Element;
+interface ICustomText extends TextProps {
+  children: string | string[] | JSX.Element;
   styles?: string;
   weight?: string;
 }
