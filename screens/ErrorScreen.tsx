@@ -7,12 +7,12 @@ export default function ErrorScreen() {
     return (
         <View className="flex-1 mb-10 w-[90%] items-center justify-center">
           <View style={[Shadow.top, {zIndex: 1}]}  className="bg-white p-1 rounded-lg mr-10 !rounded-br-none">
-            <CustomText styles="text-black" weight="medium">
+            <CustomText styles="text-purple" weight="medium">
               Oops! Seems like there is an issue
             </CustomText>
           </View>
           <View style={Shadow.box} className="bg-white rounded-lg !rounded-tl-none p-1 ml-28 ">
-            <CustomText styles="text-black" weight="medium">
+            <CustomText styles="text-purple" weight="medium">
               maybe try again ?
             </CustomText>
           </View>

@@ -24,7 +24,7 @@ export default function PriorityBadge({
     >
       <CustomText
         weight={isChosen ? "bold" : "regular"}
-        styles={`text-sm ${isChosen ? "text-white" : "text-black"}`}
+        styles={`text-sm ${isChosen ? "text-white" : "bg-white"}`}
       >
         {title}
       </CustomText>

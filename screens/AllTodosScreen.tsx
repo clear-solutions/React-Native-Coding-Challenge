@@ -5,28 +5,28 @@ import { selectCompletedTasks, selectOngoingTasks } from "../store/listSlice";
 import { RouteProp } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../types";
-import Wordmark from "../components/Wordmark";
 import TodoList from "../components/TodoList/TodoList";
 import AddTodoButton from "../components/Buttons/AddTodoButton";
+import FilterRadioGroup from "../components/FilterRadioGroup";
 
 export default function AllTodosScreen({
   route,
 }: NativeStackScreenProps<StackParamList, "AllTodos">) {
   const { listName } = route.params;
-  const dispatch = useAppDispatch();
   const allTasks = useAppSelector(
     listName === "ONGOING" ? selectOngoingTasks : selectCompletedTasks
   );
 
   return (
-    <View className="bg-blue flex-1 justify-between items-center">
-      <View className="flex-1">
-        <View className="mb-2 justify-start">
-          <TodoList title={listName} tasks={allTasks} allTasksVisible />
-        </View>
+    <View className="bg-purple flex-1 justify-between">
+      <View className="flex-1 mb-2 justify-start">
+        <TodoList title={listName} tasks={allTasks} allTasksVisible />
       </View>
-      <View></View>
-      <AddTodoButton />
+      <View className="items-center">
+      <View className="my-3 w-full px-4">
+        <FilterRadioGroup />
+      </View>
+      <AddTodoButton /></View>
     </View>
   );
 }

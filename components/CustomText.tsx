@@ -11,11 +11,13 @@ export default function CustomText({
   children,
   styles,
   weight,
+  ...props
 }: ICustomText) {
   switch (weight) {
     case "bold":
       return (
         <Text
+          {...props}
           className={styles}
           style={[{ fontFamily: "Montserrat-Bold" }]}
         >
@@ -25,6 +27,7 @@ export default function CustomText({
     case "medium":
       return (
         <Text
+          {...props}
           className={styles}
           style={[{ fontFamily: "Montserrat-Medium" }]}
         >
@@ -34,6 +37,7 @@ export default function CustomText({
     case "light":
       return (
         <Text
+          {...props}
           className={styles}
           style={[{ fontFamily: "Montserrat-Light" }]}
         >
@@ -43,6 +47,7 @@ export default function CustomText({
     default:
       return (
         <Text
+          {...props}
           className={styles}
           style={[{ fontFamily: "Montserrat-Regular" }]}
         >

@@ -1,9 +1,9 @@
 enum COLORS {
-  blue = "#72B1BC",
+  purple = "#363b59",
   white = "#F5F5F5",
-  black = "#2B2B2B",
+  gray = "#94a3b8",
   secondaryBlue = "#86c0ca",
-  primaryRed = "#ef4444",
+  primaryRed = "#fe6464",
   secondaryRed = "#dc2626",
   primaryOrange = "#f59e0b",
   secondaryOrange = "#d97706",

@@ -47,7 +47,7 @@ export default function App() {
     <Provider store={store}>
       <SafeAreaProvider>
       <AddTodoModal />
-        <SafeAreaView className="flex-1 bg-blue" onLayout={handleLayout}>
+        <SafeAreaView className="flex-1 bg-purple" onLayout={handleLayout}>
         <View className="my-1">
           <Wordmark />
         </View>

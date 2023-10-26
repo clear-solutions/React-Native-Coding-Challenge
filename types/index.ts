@@ -2,6 +2,8 @@ export interface ITodo {
   id: number;
   title: string;
   completed: false;
+  priorityTier: number;
+  creationDate: number;
 }
 
 export interface CustomNavigationProps {

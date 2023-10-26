@@ -14,6 +14,8 @@ import {
 import LoadingScreen from "./LoadingScreen";
 import ErrorScreen from "./ErrorScreen";
 import AddTodoModal from "../components/AddTodoModal";
+import CircularButton from "../components/Buttons/CircularButton";
+import COLORS from "../constants/Colors";
 
 export default function HomeScreen() {
   const ongoingTasks = useAppSelector(selectOngoingTasks);
@@ -26,7 +28,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <View className="flex-1  w-full bg-blue items-center justify-center">
+    <View className="flex-1  w-full bg-purple items-center justify-center">
       {error ? (
         <ErrorScreen />
       ) : !ongoingTasks.length && !completedTasks.length ? (
@@ -37,7 +39,27 @@ export default function HomeScreen() {
           completedTasks={completedTasks}
         />
       )}
-      {!error && <AddTodoButton />}
+      {!error && (
+        <View className="items-center flex-row justify-center w-full">
+          <View className="mr-3">
+          <CircularButton
+            bgColor={COLORS.white}
+            innerIconColor={COLORS.purple}
+            size={58}
+            innerIconSize={36}
+            innerIconName="search1"
+          /></View>
+          <AddTodoButton />
+          <View className="ml-3">
+          <CircularButton
+            bgColor={COLORS.white}
+            innerIconColor={COLORS.purple}
+            size={58}
+            innerIconSize={36}
+            innerIconName="check"
+          /></View>
+        </View>
+      )}
     </View>
   );
 }
