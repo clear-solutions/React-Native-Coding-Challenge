@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
 import React, { useState } from "react";
-import { useAppSelector } from "../services/hooks";
+import { useAppSelector, useCustomNavigation } from "../services/hooks";
 import {
   selectCompletedTasks,
   selectOngoingTasks,
@@ -31,6 +31,7 @@ export default function AllTodosScreen({
   const [searching, setSearching] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const { listName } = route.params;
+  const navigation = useCustomNavigation();
   const selecting = useAppSelector(isSelecting);
   const selectedOngoingTasks = useAppSelector(selectSelectedOngoing);
   const selectedCompletedTasks = useAppSelector(selectSelectedCompleted);
@@ -92,13 +93,27 @@ export default function AllTodosScreen({
                 />
               </View>
             )}
+            {!selecting && (
+              <CircularButton
+                onPress={() => navigation.goBack()}
+                bgColor={COLORS.white}
+                innerIconColor={COLORS.purple}
+                size={58}
+                innerIconSize={36}
+                innerIconName="back"
+              />
+            )}
             {selectedOngoingTasks.length > 0 && selecting && (
               <MarkAllCompletedButton />
             )}
             {selectedCompletedTasks.length > 0 && selecting && (
               <MarkAllUncompletedButton />
             )}
-            {!selecting && listName === LIST.ONGOING && <AddTodoButton />}
+            {!selecting && listName === LIST.ONGOING && (
+              <View className="ml-3">
+                <AddTodoButton />
+              </View>
+            )}
             <View className="ml-3">
               {selecting ? (
                 <CloseSelectionButton />

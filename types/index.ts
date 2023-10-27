@@ -10,6 +10,7 @@ export interface ITodo {
 
 export interface CustomNavigationProps {
   navigate: (screenName: string, params?: Record<string, any>) => void;
+  goBack: () => void;
 }
 
 export type StackParamList = {

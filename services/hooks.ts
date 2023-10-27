@@ -8,8 +8,9 @@ export const useCustomNavigation = () => {
   const navigation = useNavigation<CustomNavigationProps>();
 
   const navigate = (screenName: string, params?: Record<string, any>) => navigation.navigate(screenName, params);
+  const goBack = () => navigation.goBack();
 
-  return { navigate };
+  return { navigate, goBack };
 };
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
