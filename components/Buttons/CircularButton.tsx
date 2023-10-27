@@ -2,7 +2,7 @@ import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import React from "react";
 import { useAppDispatch, useCustomNavigation } from "../../services/hooks";
-import { openOrCloseModal } from "../../store/layoutSlice";
+import { setModalOpen } from "../../store/layoutSlice";
 import COLORS from "../../constants/Colors";
 
 interface Props extends TouchableOpacityProps {

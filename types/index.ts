@@ -1,17 +1,19 @@
+import LIST from "../constants/List";
+
 export interface ITodo {
   id: number;
   title: string;
-  completed: false;
+  completed: boolean;
   priorityTier: number;
   creationDate: number;
 }
 
 export interface CustomNavigationProps {
-  navigate: (listName: string, params?: Record<string, any>) => void;
+  navigate: (screenName: string, params?: Record<string, any>) => void;
 }
 
 export type StackParamList = {
   Home: undefined;
-  AllTodos: { listName: string };
+  AllTodos: { listName: LIST };
   AddTodoModal: undefined;
 };

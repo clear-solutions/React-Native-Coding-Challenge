@@ -8,6 +8,8 @@ import {
   sortByCreationDate,
   sortByPriority,
 } from "../services/utils";
+import { enableMapSet } from "immer";
+import LIST from "../constants/List";
 
 export const fetchAllTodos = createAsyncThunk(
   "list/fetchAllTodos",
@@ -23,6 +25,8 @@ export const fetchAllTodos = createAsyncThunk(
 
 interface ListState {
   ongoingTasks: ITodo[];
+  selectedOngoing: number[];
+  selectedCompleted: number[];
   completedTasks: ITodo[];
   currentFilter: "Date" | "Priority";
   status: "idle" | "pending" | "succeeded" | "failed";
@@ -32,6 +36,8 @@ interface ListState {
 
 const initialState: ListState = {
   ongoingTasks: [],
+  selectedOngoing: [],
+  selectedCompleted: [],
   completedTasks: [],
   status: "idle",
   currentFilter: "Date",
@@ -56,17 +62,70 @@ const listSlice = createSlice({
         state.ongoingTasks = [action.payload, ...state.ongoingTasks];
       }
     },
+    clearSelections: (state) => {
+      state.selectedCompleted = [];
+      state.selectedOngoing = [];
+    },
+    selectOrRemoveTask: (
+      state,
+      action: PayloadAction<{ index: number; listTitle: string }>
+    ) => {
+      const { listTitle, index } = action.payload;
+      if (listTitle === LIST.ONGOING) {
+        if (state.selectedOngoing.includes(index)) {
+          state.selectedOngoing = state.selectedOngoing.filter(
+            (i) => i !== index
+          );
+          return;
+        }
+        state.selectedOngoing = [index, ...state.selectedOngoing];
+        return;
+      }
+      if (state.selectedCompleted.includes(index)) {
+        state.selectedCompleted = state.selectedCompleted.filter(
+          (i) => i !== index
+        );
+        return;
+      }
+      state.selectedCompleted = [index, ...state.selectedCompleted];
+    },
     updateTodo: (state, action: PayloadAction<ITodo>) => {
       let newData = state.ongoingTasks;
       newData[state.editingTodoIndex as number] = action.payload;
       state.ongoingTasks = newData;
     },
+    markAsCompleted: (state, action: PayloadAction<number>) => {
+      let todo = state.ongoingTasks[action.payload];
+
+      todo.completed = true;
+      if (state.currentFilter === "Priority") {
+        state.completedTasks = addTodoOnPriorityFilter(
+          state.completedTasks,
+          todo
+        ) as ITodo[];
+      } else {
+        state.completedTasks = [todo, ...state.completedTasks];
+      }
+    },
+    markAsUncompleted: (state, action: PayloadAction<number>) => {
+      let todo = state.completedTasks[action.payload];
+
+      todo.completed = false;
+      if (state.currentFilter === "Priority") {
+        state.ongoingTasks = addTodoOnPriorityFilter(
+          state.ongoingTasks,
+          todo
+        ) as ITodo[];
+      } else {
+        state.ongoingTasks = [todo, ...state.ongoingTasks];
+      }
+    },
     deleteTodo: (
       state,
-      action: PayloadAction<Record<string, string | number>>
+      action: PayloadAction<Record<string, LIST | number>>
     ) => {
       const { index, listTitle } = action.payload;
-      if (listTitle === "ONGOING") {
+      if (listTitle === LIST.ONGOING) {
         state.ongoingTasks = deleteTodoFunction(
           state.ongoingTasks,
           index as number
@@ -127,9 +186,16 @@ const listSlice = createSlice({
 
 export const selectOngoingTasks = (state: RootState) =>
   state.todoList.ongoingTasks;
+export const selectCurrentFilter = (state: RootState) =>
+  state.todoList.currentFilter;
+export const selectSelectedOngoing = (state: RootState) =>
+  state.todoList.selectedOngoing;
+export const selectSelectedCompleted = (state: RootState) =>
+  state.todoList.selectedCompleted;
 export const selectCompletedTasks = (state: RootState) =>
   state.todoList.completedTasks;
-  export const selectEditingTodoIndex = (state: RootState) => state.todoList.editingTodoIndex;
+export const selectEditingTodoIndex = (state: RootState) =>
+  state.todoList.editingTodoIndex;
 export const getListStatus = (state: RootState) => state.todoList.status;
 export const getListError = (state: RootState) => state.todoList.error;
 export const {
@@ -139,7 +205,11 @@ export const {
   filterTasksByPriority,
   deleteTodo,
   updateTodo,
+  markAsCompleted,
+  markAsUncompleted,
+  clearSelections,
   setEditingTodoIndex,
+  selectOrRemoveTask,
 } = listSlice.actions;
 
 export default listSlice.reducer;

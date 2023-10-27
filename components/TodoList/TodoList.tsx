@@ -1,20 +1,20 @@
-import React from "react";
-import {
-  View,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState } from "react";
+import { View, TouchableOpacity } from "react-native";
 import TodoItem from "./TodoItem";
 import CustomText from "../CustomText";
 import type { ITodo } from "../../types";
-import { useCustomNavigation } from "../../services/hooks";
+import { useAppSelector, useCustomNavigation } from "../../services/hooks";
 import { SwipeListView } from "react-native-swipe-list-view";
 import HiddenRow from "../HiddenRow";
+import LIST from "../../constants/List";
+import { isSelecting } from "../../store/layoutSlice";
 
 interface IListProps {
-  title: string;
+  title: LIST;
   tasks: ITodo[];
   totalUnvisible?: number;
   allTasksVisible?: boolean;
+  searching?: boolean;
 }
 
 const TodoList = ({
@@ -22,8 +22,26 @@ const TodoList = ({
   tasks,
   totalUnvisible,
   allTasksVisible,
+  searching,
 }: IListProps) => {
+  const [visibleCount, setVisibleCount] = useState(10);
   const navigation = useCustomNavigation();
+  const selecting = useAppSelector(isSelecting);
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 10);
+  };
+
+  const FooterItem =
+    visibleCount <= tasks.length ? (
+      <View className="w-full items-center mt-3 justify-center">
+        <CustomText weight="bold" styles="tracking-[4px] text-white">
+          LOADING
+        </CustomText>
+      </View>
+    ) : (
+      <></>
+    );
 
   return (
     <View className={`w-full ${allTasksVisible && "flex-1"}`}>
@@ -38,16 +56,21 @@ const TodoList = ({
             }}
             className="justify-between mt-3 flex-row items-center"
           >
-            <CustomText styles="tracking-widest  text-white">
-              {totalUnvisible! > 100 ? "99+" : `${totalUnvisible}`} MORE
-            </CustomText>
+            {!searching && (
+              <CustomText styles="tracking-widest  text-white">
+                {totalUnvisible! > 100 ? "99+" : `${totalUnvisible}`} MORE
+              </CustomText>
+            )}
           </TouchableOpacity>
         )}
       </View>
       <View className={`w-full ${allTasksVisible && "flex-1"}`}>
         <SwipeListView
-          data={tasks}
+          data={tasks.slice(0, visibleCount)}
           extraData={tasks}
+          ListFooterComponent={FooterItem}
+          initialNumToRender={10}
+          onEndReached={handleLoadMore}
           style={{
             overflow: "hidden",
             flex: allTasksVisible ? 1 : 0,
@@ -55,13 +78,14 @@ const TodoList = ({
             paddingHorizontal: 12,
           }}
           renderItem={({ item, index }) => (
-            <TodoItem index={index} key={index} todo={item} />
+            <TodoItem index={index} listTitle={title} key={index} todo={item} />
           )}
-          stopRightSwipe={title === "ONGOING" ? -130 : -70}
+          stopRightSwipe={title === LIST.ONGOING ? -170 : -120}
           scrollEnabled={allTasksVisible ?? false}
           closeOnRowPress
-          rightOpenValue={title === "ONGOING" ? -110 : -55}
+          rightOpenValue={title === LIST.ONGOING ? -155 : -105}
           disableRightSwipe
+          disableLeftSwipe={selecting}
           renderHiddenItem={(data, rowMap) => (
             <HiddenRow
               listTitle={title}

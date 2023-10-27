@@ -6,7 +6,8 @@ module.exports = {
       purple: "#363b59",
       white: "#F5F5F5",
       black: "#2B2B2B",
-      secondaryBlue: "#86c0ca"
+      green: "#14b8a6",
+      red: "#fe6464"
     },
   },
   plugins: [],

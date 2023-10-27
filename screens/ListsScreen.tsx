@@ -3,27 +3,41 @@ import { View } from "react-native";
 import TodoList from "../components/TodoList/TodoList";
 import { ITodo } from "../types";
 import { visibleTodos } from "../services/utils";
+import LIST from "../constants/List";
+import CustomText from "../components/CustomText";
 
 interface IListsScreen {
   ongoingTasks: ITodo[];
   completedTasks: ITodo[];
+  searching?: boolean;
 }
 
-const ListsScreen = ({ ongoingTasks, completedTasks }: IListsScreen) => {
+const ListsScreen = ({
+  ongoingTasks,
+  completedTasks,
+  searching,
+}: IListsScreen) => {
   const { totalUnvisible: totalUnvisibleOngoing, list: visibleOngoingTasks } =
     visibleTodos(ongoingTasks, completedTasks.length);
   const {
     totalUnvisible: totalUnvisibleCompleted,
     list: visibleCompletedTasks,
   } = visibleTodos(completedTasks, completedTasks.length);
-
   return (
     <View className="flex-1 w-full">
+      {searching && !ongoingTasks.length && !completedTasks.length && (
+          <View className="w-full items-center mt-4">
+            <CustomText weight="bold" styles="text-2xl text-white">
+              No task found with this title
+            </CustomText>
+          </View>
+        )}
       {ongoingTasks.length > 0 && (
         <View className="mt-3">
           <TodoList
+            searching={searching}
             tasks={visibleOngoingTasks}
-            title="ONGOING"
+            title={LIST.ONGOING}
             totalUnvisible={totalUnvisibleOngoing}
           />
         </View>
@@ -31,8 +45,9 @@ const ListsScreen = ({ ongoingTasks, completedTasks }: IListsScreen) => {
       {completedTasks.length > 0 && (
         <View className="mt-3">
           <TodoList
+            searching={searching}
             tasks={visibleCompletedTasks}
-            title="FINISHED"
+            title={LIST.FINISHED}
             totalUnvisible={totalUnvisibleCompleted}
           />
         </View>

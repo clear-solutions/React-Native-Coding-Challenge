@@ -11,7 +11,7 @@ import CustomButton from "./Buttons/CustomButton";
 import PriorityBadge from "./Buttons/PriorityBadge";
 import { Priorities } from "../constants/Priorities";
 import { useAppDispatch, useAppSelector } from "../services/hooks";
-import { openOrCloseModal, selectIsModalOpen } from "../store/layoutSlice";
+import { setModalOpen, selectIsModalOpen } from "../store/layoutSlice";
 import { createNewTodo, selectEditingTodoIndex, selectOngoingTasks, setEditingTodoIndex, updateTodo } from "../store/listSlice";
 import { getNewTodo } from "../services/utils";
 
@@ -41,11 +41,11 @@ export default function AddTodoModal() {
     setEditing(false);
     Keyboard.dismiss();
     dispatch(setEditingTodoIndex(null));
-    dispatch(openOrCloseModal("close"));
+    dispatch(setModalOpen(false));
   }
 
   const handleUpdateTodo = () => {
-    const todo = getNewTodo(title, Priorities[chosenPriority].tier);
+    const todo = getNewTodo(title, chosenPriority);
     dispatch(updateTodo(todo));
     close();
   }
@@ -79,7 +79,7 @@ export default function AddTodoModal() {
         <TextInput
           value={title}
           onChangeText={(text) => setTitle(text)}
-          className="w-full h-10 mt-2 p-2 text-[20px] rounded-md border-[#d4d3d3] items-center justify-center border "
+          className="w-full h-10 mt-2 p-2 text-[20px] rounded-md border-[#d4d3d3] items-center justify-center border"
         />
         <View className="flex-row justify-between items-center w-full">
           {Priorities.map((option, index) => (
@@ -100,7 +100,7 @@ export default function AddTodoModal() {
             Cancel
           </CustomButton>
           <CustomButton
-            onPress={handleCreateNewTodo}
+            onPress={isEditing ?handleUpdateTodo : handleCreateNewTodo}
             styles="bg-[#14b8a6] flex-1 p-3 items-center justify-center  rounded-md ml-1"
             textStyle="text-white text-md"
           >

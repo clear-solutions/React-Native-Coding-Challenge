@@ -2,17 +2,19 @@ import { View, Text } from "react-native";
 import React, { useState } from "react";
 import CustomText from "./CustomText";
 import RadioButton from "./Buttons/RadioButton";
-import { useAppDispatch } from "../services/hooks";
+import { useAppDispatch, useAppSelector } from "../services/hooks";
 import {
   filterTasksByDate,
   filterTasksByPriority,
+  selectCurrentFilter,
   setCurrentFilter,
 } from "../store/listSlice";
 
 export default function FilterRadioGroup() {
-  const [selectedOptionIndex, setSelected] = useState(0);
   const dispatch = useAppDispatch();
 
+  const currentFilter = useAppSelector(selectCurrentFilter);
+  const [selectedOption, setSelected] = useState(currentFilter);
   const filterOptions = [
     {
       label: "Date",
@@ -39,10 +41,10 @@ export default function FilterRadioGroup() {
         <RadioButton
           key={index}
           label={option.label}
-          selected={index === selectedOptionIndex}
+          selected={option.label === selectedOption}
           onPress={() => {
-            if (index === selectedOptionIndex) return;
-            setSelected(index);
+            if (option.label === selectedOption) return;
+            setSelected(option.label);
             option.action();
           }}
         />

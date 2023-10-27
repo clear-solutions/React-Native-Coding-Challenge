@@ -44,7 +44,6 @@ export const deleteTodoFunction = (data: ITodo[], index:number) => {
   return newData;
 }
 
-
 export const getNewTodo = (title:string, priorityTier:number):ITodo => {
   const date = new Date();
 
