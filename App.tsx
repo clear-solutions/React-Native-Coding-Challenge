@@ -13,8 +13,6 @@ import { StackParamList } from "./types";
 import AddTodoModal from "./components/AddTodoModal";
 import { View } from "react-native";
 import Wordmark from "./components/Wordmark";
-import { useAppSelector } from "./services/hooks";
-import { selectIsModalOpen } from "./store/layoutSlice";
 
 let customFonts = {
   "Montserrat-Regular": require("./assets/fonts/Montserrat-Regular.ttf"),
@@ -31,7 +29,6 @@ const Stack = createNativeStackNavigator<StackParamList>();
 
 export default function App() {
   const [isLoaded] = useFonts(customFonts);
-  //const insets = useSafeAreaInsets();
 
   const handleLayout = useCallback(async () => {
     if (isLoaded) {

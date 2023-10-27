@@ -14,4 +14,7 @@ export default class Client {
       
         return data;
     }
+
+
+    ///Post method can be also added to here
 }

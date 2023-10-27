@@ -36,7 +36,6 @@ export default function HomeScreen() {
   const status = useAppSelector(getListStatus);
   const selecting = useAppSelector(isSelecting);
   const taskExists = ongoingTasks.length > 0 || completedTasks.length > 0;
-  const hasSearchInput = searchInput.length > 0 && searching;
 
   if (status === "pending") {
     return <LoadingScreen />;
@@ -61,14 +60,14 @@ export default function HomeScreen() {
           <ListsScreen
             searching={searching}
             ongoingTasks={
-              hasSearchInput
+              searching
                 ? ongoingTasks.filter((task) =>
                     task.title.toLowerCase().includes(searchInput.toLowerCase())
                   )
                 : ongoingTasks
             }
             completedTasks={
-              hasSearchInput
+              searching
                 ? completedTasks.filter((task) =>
                     task.title.toLowerCase().includes(searchInput.toLowerCase())
                   )

@@ -8,7 +8,7 @@ import CustomText from "../components/CustomText";
 
 export default function LoadingScreen() {
   return (
-    <View className="flex-1  w-full bg-blue items-center justify-center">
+    <View className="flex-1  w-full bg-purple items-center justify-center">
       <CustomText weight="bold" styles="tracking-[4px] text-2xl text-purple">LOADING</CustomText>
     </View>
   );

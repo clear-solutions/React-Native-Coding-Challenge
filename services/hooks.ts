@@ -3,7 +3,6 @@ import { CustomNavigationProps } from "../types";
 import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 import type { RootState, AppDispatch } from "../store/store";
-import LIST from "../constants/List";
 
 export const useCustomNavigation = () => {
   const navigation = useNavigation<CustomNavigationProps>();

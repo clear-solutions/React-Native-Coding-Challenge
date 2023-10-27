@@ -34,7 +34,6 @@ export default function AllTodosScreen({
   const selecting = useAppSelector(isSelecting);
   const selectedOngoingTasks = useAppSelector(selectSelectedOngoing);
   const selectedCompletedTasks = useAppSelector(selectSelectedCompleted);
-  const hasSearchInput = searchInput.length > 0 && searching;
 
   const allTasks = useAppSelector(
     listName === LIST.ONGOING ? selectOngoingTasks : selectCompletedTasks
@@ -64,9 +63,9 @@ export default function AllTodosScreen({
       <View className="flex-1 mb-2 justify-start">
         <TodoList
           title={listName}
-          searching={hasSearchInput}
+          searching={searching}
           tasks={
-            hasSearchInput
+            searching
               ? allTasks.filter((task) =>
                   task.title.toLowerCase().includes(searchInput.toLowerCase())
                 )
