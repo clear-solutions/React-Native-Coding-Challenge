@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
 import CustomText from "./CustomText";
 import RadioButton from "./Buttons/RadioButton";
@@ -9,24 +9,25 @@ import {
   selectCurrentFilter,
   setCurrentFilter,
 } from "../store/listSlice";
+import FILTERS from "../constants/Filters";
 
 export default function FilterRadioGroup() {
   const dispatch = useAppDispatch();
-
   const currentFilter = useAppSelector(selectCurrentFilter);
-  const [selectedOption, setSelected] = useState(currentFilter);
+  const [selectedOption, setSelected] = useState<FILTERS>(currentFilter);
+
   const filterOptions = [
     {
-      label: "Date",
+      label: FILTERS.DATE,
       action: () => {
-        dispatch(setCurrentFilter("Date"));
+        dispatch(setCurrentFilter(FILTERS.DATE));
         dispatch(filterTasksByDate());
       },
     },
     {
-      label: "Priority",
+      label: FILTERS.PRIORITY,
       action: () => {
-        dispatch(setCurrentFilter("Priority"));
+        dispatch(setCurrentFilter(FILTERS.PRIORITY));
         dispatch(filterTasksByPriority());
       },
     },

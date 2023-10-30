@@ -47,7 +47,7 @@ export default function HomeScreen() {
   }
 
   return (
-    <View className="flex-1  w-full bg-purple items-center justify-center">
+    <View className="flex-1 w-full bg-purple items-center justify-center">
       {error ? (
         <ErrorScreen />
       ) : !ongoingTasks.length && !completedTasks.length ? (

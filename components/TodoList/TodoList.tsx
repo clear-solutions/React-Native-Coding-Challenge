@@ -49,7 +49,7 @@ const TodoList = ({
         <CustomText weight="bold" styles="tracking-widest text-white">
           {title}
         </CustomText>
-        {!allTasksVisible && (
+        {!allTasksVisible && totalUnvisible! > 0 && (
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("AllTodos", { listName: title });
@@ -57,7 +57,7 @@ const TodoList = ({
             className="justify-between mt-3 flex-row items-center"
           >
             {!searching && (
-              <CustomText styles="tracking-widest  text-white">
+              <CustomText testID="navigation-to-all" styles="tracking-widest  text-white">
                 {totalUnvisible! > 100 ? "99+" : `${totalUnvisible}`} MORE
               </CustomText>
             )}

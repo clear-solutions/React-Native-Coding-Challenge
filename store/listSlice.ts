@@ -8,8 +8,8 @@ import {
   sortByCreationDate,
   sortByPriority,
 } from "../services/utils";
-import { enableMapSet } from "immer";
 import LIST from "../constants/List";
+import FILTERS from "../constants/Filters";
 
 export const fetchAllTodos = createAsyncThunk(
   "list/fetchAllTodos",
@@ -28,7 +28,7 @@ interface ListState {
   selectedOngoing: number[];
   selectedCompleted: number[];
   completedTasks: ITodo[];
-  currentFilter: "Date" | "Priority";
+  currentFilter: FILTERS;
   status: "idle" | "pending" | "succeeded" | "failed";
   error: string | null;
   editingTodoIndex: number | null;
@@ -40,7 +40,7 @@ const initialState: ListState = {
   selectedCompleted: [],
   completedTasks: [],
   status: "idle",
-  currentFilter: "Date",
+  currentFilter: FILTERS.DATE,
   error: null,
   editingTodoIndex: null,
 };
@@ -49,11 +49,11 @@ const listSlice = createSlice({
   name: "todoList",
   initialState,
   reducers: {
-    setCurrentFilter: (state, action: PayloadAction<"Date" | "Priority">) => {
+    setCurrentFilter: (state, action: PayloadAction<FILTERS>) => {
       state.currentFilter = action.payload;
     },
     createNewTodo: (state, action: PayloadAction<ITodo>) => {
-      if (state.currentFilter === "Priority") {
+      if (state.currentFilter === FILTERS.PRIORITY) {
         state.ongoingTasks = addTodoOnPriorityFilter(
           state.ongoingTasks,
           action.payload
@@ -98,7 +98,7 @@ const listSlice = createSlice({
       let todo = state.ongoingTasks[action.payload];
 
       todo.completed = true;
-      if (state.currentFilter === "Priority") {
+      if (state.currentFilter === FILTERS.PRIORITY) {
         state.completedTasks = addTodoOnPriorityFilter(
           state.completedTasks,
           todo
@@ -111,7 +111,7 @@ const listSlice = createSlice({
       let todo = state.completedTasks[action.payload];
 
       todo.completed = false;
-      if (state.currentFilter === "Priority") {
+      if (state.currentFilter === FILTERS.PRIORITY) {
         state.ongoingTasks = addTodoOnPriorityFilter(
           state.ongoingTasks,
           todo
@@ -141,12 +141,12 @@ const listSlice = createSlice({
       state.editingTodoIndex = action.payload;
     },
     filterTasksByPriority: (state) => {
-      state.currentFilter = "Priority";
+      state.currentFilter = FILTERS.PRIORITY;
       state.completedTasks = sortByPriority(state.completedTasks);
       state.ongoingTasks = sortByPriority(state.ongoingTasks);
     },
     filterTasksByDate: (state) => {
-      state.currentFilter = "Date";
+      state.currentFilter = FILTERS.DATE;
       state.completedTasks = sortByCreationDate(state.completedTasks);
       state.ongoingTasks = sortByCreationDate(state.ongoingTasks);
     },
@@ -168,7 +168,7 @@ const listSlice = createSlice({
             ? state.completedTasks.push(todo)
             : state.ongoingTasks.push(todo);
         });
-        if (state.currentFilter === "Priority") {
+        if (state.currentFilter === FILTERS.PRIORITY) {
           filterTasksByPriority();
         } else {
           filterTasksByDate();

@@ -19,6 +19,7 @@ export default function EmptyListScreen() {
         </CustomText>
       </View>
       <Image
+      testID="empty-list-image"
         resizeMode="contain"
         className="max-w-full h-64"
         source={require("../assets/no-data.png")}

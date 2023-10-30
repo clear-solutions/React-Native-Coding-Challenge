@@ -22,7 +22,7 @@ const ListsScreen = ({
   const {
     totalUnvisible: totalUnvisibleCompleted,
     list: visibleCompletedTasks,
-  } = visibleTodos(completedTasks, completedTasks.length);
+  } = visibleTodos(completedTasks, ongoingTasks.length);
   return (
     <View className="flex-1 w-full">
       {searching && !ongoingTasks.length && !completedTasks.length && (
